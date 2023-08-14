@@ -15,6 +15,8 @@ namespace Minsk.CodeAnalysis.Syntax {
         BangToken,
         AmpersandAmpersandToken,
         PipePipeToken,
+        EqualsEqualsToken,
+        BangEqualsToken,
 
         // Keywords
         TrueKeyword,

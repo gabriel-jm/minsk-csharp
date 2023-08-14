@@ -6,6 +6,8 @@ namespace Minsk.CodeAnalysis.Binding
         Multiplication,
         Division,
         LogicalOr,
-        LogicalAnd
+        LogicalAnd,
+        Equals,
+        NotEquals
     }
 }
