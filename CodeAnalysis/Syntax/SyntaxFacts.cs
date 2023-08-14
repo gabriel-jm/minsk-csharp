@@ -23,5 +23,16 @@ namespace Minsk.CodeAnalysis.Syntax {
                 default: return 0;
             }
         }
+
+        public static SyntaxKind GetKeywordKind(string text) {
+            switch (text) {
+                case "true":
+                    return SyntaxKind.TrueKeyword;
+                case "false":
+                    return SyntaxKind.FalseKeyword;
+                default:
+                    return SyntaxKind.IdentifierToken;
+            }
+        }
     }
 }
