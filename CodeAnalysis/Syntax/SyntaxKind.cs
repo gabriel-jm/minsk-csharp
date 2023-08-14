@@ -12,6 +12,9 @@ namespace Minsk.CodeAnalysis.Syntax {
         OpenParenthesisToken,
         CloseParenthesisToken,
         IdentifierToken,
+        BangToken,
+        AmpersandAmpersandToken,
+        PipePipeToken,
 
         // Keywords
         TrueKeyword,

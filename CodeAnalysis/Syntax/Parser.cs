@@ -98,7 +98,7 @@ namespace Minsk.CodeAnalysis.Syntax {
                 case SyntaxKind.TrueKeyword:
                 case SyntaxKind.FalseKeyword: {
                     var keyword = NextToken();
-                    var value = Current.Kind == SyntaxKind.TrueKeyword;
+                    var value = keyword.Kind == SyntaxKind.TrueKeyword;
                     return new LiteralExpressionSyntax(keyword, value);
                 }
 
