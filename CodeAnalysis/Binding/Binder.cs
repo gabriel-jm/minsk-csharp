@@ -2,69 +2,8 @@ using System.Collections.Generic;
 using System;
 using Minsk.CodeAnalysis.Syntax;
 
-namespace Minsk.CodeAnalysis.Binding {
-
-    internal enum BoundNodeKind {
-        LiteralExpression,
-        UnaryExpression,
-        BinaryExpression
-    }
-
-    internal abstract class BoundNode {
-        public abstract BoundNodeKind Kind { get; }
-    }
-
-    internal abstract class BoundExpression : BoundNode {
-        public abstract Type Type { get; }
-    }
-
-    internal enum BoundUnaryOperatorKind {
-        Identity,
-        Negation
-    }
-
-    internal sealed class BoundLiteralExpression : BoundExpression {
-        public object Value { get; }
-        public override Type Type => Value.GetType();
-        public override BoundNodeKind Kind => BoundNodeKind.LiteralExpression;
-        
-        public BoundLiteralExpression(object value) {
-            Value = value;
-        }
-    }
-
-    internal sealed class BoundUnaryExpression : BoundExpression {
-        public BoundUnaryOperatorKind OperatorKind { get; }
-        public BoundExpression Operand { get; }
-        public override Type Type => Operand.Type;
-        public override BoundNodeKind Kind => BoundNodeKind.UnaryExpression;
-
-        public BoundUnaryExpression(BoundUnaryOperatorKind operatorKind, BoundExpression operand) {
-            OperatorKind = operatorKind;
-            Operand = operand;
-        }
-    }
-
-    internal enum BoundBinaryOperatorKind {
-        Addition,
-        Subtraction,
-        Multiplication,
-        Division
-    }
-
-    internal sealed class BoundBinaryExpression : BoundExpression {
-        public BoundBinaryOperatorKind OperatorKind { get; }
-        public BoundExpression Left { get; }
-        public BoundExpression Right { get; }
-        public override Type Type => Left.Type;
-        public override BoundNodeKind Kind => BoundNodeKind.BinaryExpression;
-
-        public BoundBinaryExpression(BoundExpression left, BoundBinaryOperatorKind operatorKind, BoundExpression right) {
-            OperatorKind = operatorKind;
-            Left = left;
-            Right = right;
-        }
-    }
+namespace Minsk.CodeAnalysis.Binding
+{
 
     internal sealed class Binder {
         public readonly List<string> _diagnostics = new List<string>();
@@ -110,7 +49,7 @@ namespace Minsk.CodeAnalysis.Binding {
 
             if(boundOperatorKind == null) {
                 _diagnostics.Add(
-                    $"Binary operator '{syntax.OperatorToken.Text}' is not defined for type {boundLeft.Type} and {boundRight.Type}"
+                    $"Binary operator '{syntax.OperatorToken.Text}' is not defined for types {boundLeft.Type} and {boundRight.Type}"
                 );
                 return boundLeft;
             }
