@@ -4,7 +4,7 @@ namespace Minsk.CodeAnalysis.Syntax {
     internal sealed class Lexer {
         private readonly string _text;
         private int _position;
-        private List<string> _diagnostics = new List<string>();
+        private DiagnosticBag _diagnostics = new DiagnosticBag();
 
         public Lexer(string text) {
             _text = text;
@@ -21,7 +21,7 @@ namespace Minsk.CodeAnalysis.Syntax {
             return _text[index];
         }
 
-        public IEnumerable<string> Diagnostics => _diagnostics;
+        public DiagnosticBag Diagnostics => _diagnostics;
 
         private void Next() => _position++;
 
@@ -40,7 +40,11 @@ namespace Minsk.CodeAnalysis.Syntax {
                 var length = _position - start;
                 var text = _text.Substring(start, length);
                 if(!int.TryParse(text, out var value)) {
-                    _diagnostics.Add($"The number {text} isn't valid Int32.");
+                    _diagnostics.ReportInvalidNumber(
+                        new TextSpan(start, length),
+                        _text,
+                        typeof(int)
+                    );
                 }
 
                 return new SyntaxToken(SyntaxKind.NumberToken, start, text, value);
@@ -110,7 +114,7 @@ namespace Minsk.CodeAnalysis.Syntax {
                     break;
             }
 
-            _diagnostics.Add($"ERROR: bad character input: '{Current}'");
+            _diagnostics.ReportBadCharacter(_position, Current);
             return new SyntaxToken(
                 SyntaxKind.BadToken,
                 _position++,
