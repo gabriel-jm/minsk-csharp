@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Collections;
 using Minsk.CodeAnalysis.Syntax;
 
@@ -29,9 +31,23 @@ internal sealed class DiagnosticBag : IEnumerable<Diagnostic> {
         Report(new TextSpan(position, 1), message);
     }
 
-    public void ReportUnexpectedToken(TextSpan span, SyntaxKind kind, SyntaxKind expectedKind)
-    {
+    public void ReportUnexpectedToken(TextSpan span, SyntaxKind kind, SyntaxKind expectedKind) {
         var message = $"unexpected token <{kind}>, expected <{expectedKind}>.";
+        Report(span, message);
+    }
+
+    internal void ReportUndefinedUnaryOperator(TextSpan span, string operatorText, Type operandType) {
+        var message = $"Unary operator '{operatorText}' is not defined for type {operandType}";
+        Report(span, message);
+    }
+
+    internal void ReportUndefinedBinaryOperator(
+        TextSpan span,
+        string operatorText,
+        Type leftType,
+        Type rightType
+    ) {
+        var message = $"Binary operator '{operatorText}' is not defined for types {leftType} and {rightType}";
         Report(span, message);
     }
 }
